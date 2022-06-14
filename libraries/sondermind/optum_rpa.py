@@ -3,6 +3,8 @@ import imaplib
 import email
 import re
 import datetime
+import time
+
 from retry import retry
 
 from selenium import webdriver
@@ -17,24 +19,28 @@ class Optum:
         else:
             self.chromedriver_path = r"C:\Users\kykuc\Downloads\chromedriver_win32\chromedriver.exe"
         log.info(f"Chrome webdriver path = {self.chromedriver_path}")
-        self.options = webdriver.ChromeOptions()
-        self.options.add_argument("--no-sandbox")
-        self.options.add_argument("--disable-extensions")
-        self.options.add_argument('--disable-dev-shm-usage')
+        # self.options = webdriver.ChromeOptions()
+        # self.options.add_argument("--no-sandbox")
+        # self.options.add_argument("--disable-extensions")
+        # self.options.add_argument('--disable-dev-shm-usage')
         self.browser = Selenium()
         self.optum_creds = optum_creds
         self.gmail_creds = gmail_creds
 
     def login(self):
         log.info("Logging to Optum...")
-        self.browser.open_browser(
-            self.optum_creds["url"], browser="googlechrome", executable_path=self.chromedriver_path, options=self.options
-        )
+        self.browser.open_available_browser(self.optum_creds["url"])
+        # self.browser.open_browser(
+        #     self.optum_creds["url"], browser="googlechrome", executable_path=self.chromedriver_path, options=self.options
+        # )
         self.browser.maximize_browser_window()
         self.browser.click_element_when_visible("//a[contains(text(), 'Log In')]")
         self.browser.input_text_when_element_is_visible("//input[@id='userNameId_input']", self.optum_creds["login"])
         self.browser.input_text_when_element_is_visible("//input[@id='passwdId_input']", self.optum_creds["password"])
+        self.browser.capture_page_screenshot("output/inputed_creds.png")
         self.browser.click_element_when_visible("//input[@id='SignIn']")
+        time.sleep(1)
+        self.browser.capture_page_screenshot("output/clicked_submit.png")
         access_code = self._get_gmail_code()
         log.info(f"got access code = {access_code}")
         self.browser.input_text_when_element_is_visible("//input[@id='EmailText_input']", access_code)
