@@ -80,18 +80,8 @@ class SonderMind:
         self.browser.input_text_when_element_is_visible(
             '//input[@id="app_authenticate_password"]', self.credentials["password"]
         )
-        l = self.browser.find_element("//h1[@data-test='title-login']")
-        log.info(f"Title = {l.text}\n")
-        log.info(f"I inputed {self.credentials['password']} to password field, it really exists!!!")
-        # log.info(f"\nh1 text = {self.browser.find_element('/html/body/div[3]/div/h1[2]').text}\n")
         self.browser.click_button_when_visible('//button[@type="submit"]')
-        try:
-            self.browser.click_element_when_visible('//span[contains(text(), "Next")]')
-        except Exception as e:
-            self.browser.set_screenshot_directory(os.path.join(CONFIG.PATHS.DW, "output"))
-            self.browser.capture_page_screenshot()
-            print(e)
-
+        self.browser.click_element_when_visible('//span[contains(text(), "Next")]')
         self.solve_captcha()
         self.browser.input_text_when_element_is_visible('//input[@name="password"]', self.gmail_creds["password"])
         self.browser.click_element_when_visible('//span[contains(text(), "Next")]')

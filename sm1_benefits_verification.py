@@ -38,15 +38,8 @@ class Sm1BenefitsVerification:
         """
         Login to Sondermind using the Bitwarden credentials
         """
-        # log.info(f"\n{os.listdir('/usr/bin')}\n")
-        self._sondermind_website.login()
-        # optum_website = Optum(CREDENTIALS["optum"], CREDENTIALS["gmail"])
-        # try:
-        #     optum_website.login()
-        # except Exception as e:
-        #     log.info(f"{e}, taking screenshot")
-        #     optum_website.browser.capture_page_screenshot()
-        # self._sondermind_website.login()
+        optum_website = Optum(CREDENTIALS["optum"], CREDENTIALS["gmail"])
+        optum_website.login()
 
     @step(1, 2)
     def go_to_benefits_verification(self):
