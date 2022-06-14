@@ -17,7 +17,6 @@ class Optum:
             self.chromedriver_path = r"C:\Users\kykuc\Downloads\chromedriver_win32\chromedriver.exe"
         log.info(f"Chrome webdriver path = {self.chromedriver_path}")
         self.browser = Selenium()
-        Selenium()
         self.optum_creds = optum_creds
         self.gmail_creds = gmail_creds
 
