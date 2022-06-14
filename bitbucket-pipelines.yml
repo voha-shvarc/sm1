@@ -1,0 +1,38 @@
+definitions:
+  steps:
+    - step: &pre-commit
+        name: Pre Commit Check
+        image: python:3.9.0
+        caches:
+          - pip
+        script:
+          - pip install pre-commit
+          - pre-commit run --all-files
+    - step: &deploy
+        name: Deploy to workspace on Robocloud
+        image: python:3.9.0
+        caches:
+          - pip
+        script:
+          - curl -o rcc $robocloud_rcc_url
+          - chmod a+x rcc
+          - mkdir -p $HOME/.robocorp
+          - ./rcc cloud push -r $robot_id -w $workspace_id --account $robocloud_credentials
+
+pipelines:
+  default:
+    - step:
+        <<: *pre-commit
+  branches:
+    dev:
+        - step:
+            <<: *pre-commit
+        - step:
+            <<: *deploy
+            deployment: Dev
+    master:
+        - step:
+            <<: *pre-commit
+        - step:
+            <<: *deploy
+            deployment: Prod

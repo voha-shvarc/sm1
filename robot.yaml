@@ -1,0 +1,21 @@
+tasks:
+  Default:
+    command:
+      - python
+      - codeartifact_shim.py
+      - --secret
+      - aws_connection
+      - --requirements
+      - requirements.txt
+      - --command
+      - python
+      - main.py
+
+condaConfigFile: conda.yaml
+artifactsDir: output
+PATH:
+  - .
+PYTHONPATH:
+  - .
+ignoreFiles:
+  - .gitignore

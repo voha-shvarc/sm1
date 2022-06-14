@@ -1,0 +1,102 @@
+# Manifest
+---
+uid: SM1_BENEFITS_VERIFICATION
+name: SM1 Benefits Verification
+description: --
+author: --
+source: --
+version: 0.0.1
+
+workflow:
+  - step_id: 1
+    step_type: sequential
+    title: initialization
+    description: initializing the required site objects and variables.
+    steps:
+      - step_id: 1.1
+        title: Login to the SonderMind
+        step_type: sequential
+        description: Login to the SonderMind website.
+      - step_id: 1.2
+        title: Go to the benefits verification tab
+        step_type: sequential
+        description: Click Claims button and open benefits verification tab.
+  - step_id: 2
+    step_type: sequential
+    title: Select unprocessed insurance.
+    description: Select the insurance which is remaining to be processed by the DW.
+  - step_id: 3
+    step_type: sequential
+    title: Start loop for unprocessed record
+    description: DW will wait for records to load and then start processing unprocessed records.
+    steps:
+      - step_id: 3.1
+        step_type: sequential
+        title: Sort record
+        description: Click twice of Days in queue to sort the records.
+      - step_id: 3.2
+        step_type: sequential
+        title: Check EAP
+        description: Check EAP value of current record and return true or false according to it.
+  - step_id: 4
+    step_type: sequential
+    title: Check Cigna claims entries
+    description: Start loop for Cigna check claim entries
+    steps:
+      - step_id: 4.1
+        step_type: sequential
+        title: Check Member Number (Cigna-EAP)
+        description: Check whether the member number exist and match the correct format for authorization numbers
+      - step_id: 4.2
+        step_type: sequential
+        title: Get insurance details for cigna claim.
+        description: Check whether the row contains Processing or Proposed in ID column and get number of Visits, Start Date and End Date
+      - step_id: 4.3
+        step_type: sequential
+        title: Verify DOS and the number of rows with Processing and Proposed status in ID column.
+        description: Check whether DOS of the row before End Date + 30 days and number of rows with Processing or Proposed status in the ID less than the number of Visits
+      - step_id: 4.4
+        step_type: sequential
+        title: Get client email cigna
+        description: Retrieve client email from insurance detail window.
+      - step_id: 4.5
+        step_type: sequential
+        title: Check insurance rows cigna
+        description: Check insurance row with EAP in it.
+      - step_id: 4.6
+        step_type: sequential
+        title: Check authorization number cigna
+        description: Verify the authorization number and process the claims for cigna.
+  - step_id: 5
+    step_type: sequential
+    title: Check Optum claims entries
+    description: Start loop for Optum check claim entries
+    steps:
+      - step_id: 5.1
+        step_type: sequential
+        title: Check Member Number (Optum-EAP)
+        description: Check whether the member number exist and match the correct format for authorization numbers
+      - step_id: 5.2
+        step_type: sequential
+        title: Get insurance details for Optum claim.
+        description: Check whether the row contains Processing or Proposed in ID column and get number of Visits, Start Date and End Date
+      - step_id: 5.3
+        step_type: sequential
+        title: Verify DOS and the number of rows with Processing and Proposed status in ID column.
+        description: Check whether DOS of the row before End Date + 30 days and number of rows with Processing or Proposed status in the ID less than the number of Visits
+      - step_id: 5.4
+        step_type: sequential
+        title: Get client email Optum
+        description: Retrieve client email from insurance detail window.
+      - step_id: 5.5
+        step_type: sequential
+        title: Check insurance rows Optum
+        description: Check insurance row with EAP in it.
+      - step_id: 5.6
+        step_type: sequential
+        title: Check authorization number Optum
+        description: Verify the authorization number and process the claims for Optum.
+  - step_id: 6
+    step_type: sequential
+    title: Send report
+    description: Send report in the form of html table.
