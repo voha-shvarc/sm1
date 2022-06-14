@@ -42,14 +42,14 @@ class Sm1BenefitsVerification:
         try:
             self._sondermind_website.login()
         except Exception as e:
-            log.info(e)
+            log.info(f"{e}, taking screenshot")
             self._sondermind_website.browser.capture_page_screenshot("sonder.png")
-        optum_website = Optum(CREDENTIALS["optum"], CREDENTIALS["gmail"])
-        try:
-            optum_website.login()
-        except Exception as e:
-            log.info(e)
-            optum_website.browser.capture_page_screenshot()
+        # optum_website = Optum(CREDENTIALS["optum"], CREDENTIALS["gmail"])
+        # try:
+        #     optum_website.login()
+        # except Exception as e:
+        #     log.info(f"{e}, taking screenshot")
+        #     optum_website.browser.capture_page_screenshot()
         # self._sondermind_website.login()
 
     @step(1, 2)

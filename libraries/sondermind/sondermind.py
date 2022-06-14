@@ -74,14 +74,15 @@ class SonderMind:
         self.browser.open_available_browser(self.credentials["url"])
         self.browser.maximize_browser_window()
         self.browser.input_text_when_element_is_visible(
-            '//input[@id="app_authenticate_email"]', self.credentials["login"]
+            '//input[@id="app_authenticate_email"]', self.credentials["login"], timeout=60
         )
         self.browser.input_text_when_element_is_visible(
-            '//input[@id="app_authenticate_password"]', self.credentials["password"]
+            '//input[@id="app_authenticate_password"]', self.credentials["password"], timeout=60
         )
-        log.info(f"\nh1 text = {self.browser.find_element('/html/body/div[3]/div/h1[2]').text}\n")
-        self.browser.click_button_when_visible('//button[@type="submit"]')
-        self.browser.click_element_when_visible('//span[contains(text(), "Next")]')
+        log.info(f"I inputed {self.credentials['passwrod']} to password field, it really exists!!!")
+        # log.info(f"\nh1 text = {self.browser.find_element('/html/body/div[3]/div/h1[2]').text}\n")
+        self.browser.click_button_when_visible('//button[@type="submit"]', timeout=60)
+        self.browser.click_element_when_visible('//span[contains(text(), "Next")]', timeout=60)
         self.solve_captcha()
         self.browser.input_text_when_element_is_visible('//input[@name="password"]', self.gmail_creds["password"])
         self.browser.click_element_when_visible('//span[contains(text(), "Next")]')
