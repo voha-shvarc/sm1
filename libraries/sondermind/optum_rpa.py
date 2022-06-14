@@ -14,25 +14,26 @@ from libraries import CONFIG, logger as log
 
 class Optum:
     def __init__(self, optum_creds, gmail_creds):
-        if CONFIG.RUN_MODE == "PRD":
-            self.chromedriver_path = os.path.join(CONFIG.PATHS.BOT, "chromedriver")
-        else:
-            self.chromedriver_path = r"C:\Users\kykuc\Downloads\chromedriver_win32\chromedriver.exe"
-        log.info(f"Chrome webdriver path = {self.chromedriver_path}")
-        self.options = webdriver.ChromeOptions()
-        self.options.add_argument("--no-sandbox")
-        self.options.add_argument("--headless")
-        self.options.add_argument("--disable-extensions")
-        self.options.add_argument('--disable-dev-shm-usage')
+        # if CONFIG.RUN_MODE == "PRD":
+        #     self.chromedriver_path = os.path.join(CONFIG.PATHS.BOT, "chromedriver")
+        # else:
+        #     self.chromedriver_path = r"C:\Users\kykuc\Downloads\chromedriver_win32\chromedriver.exe"
+        # log.info(f"Chrome webdriver path = {self.chromedriver_path}")
+        # self.options = webdriver.ChromeOptions()
+        # self.options.add_argument("--no-sandbox")
+        # self.options.add_argument("--headless")
+        # self.options.add_argument("--disable-extensions")
+        # self.options.add_argument('--disable-dev-shm-usage')
         self.browser = Selenium()
         self.optum_creds = optum_creds
         self.gmail_creds = gmail_creds
 
     def login(self):
         log.info("Logging to Optum...")
-        self.browser.open_browser(
-            self.optum_creds["url"], browser="googlechrome", executable_path=self.chromedriver_path, options=self.options
-        )
+        # self.browser.open_browser(
+        #     self.optum_creds["url"], browser="googlechrome", executable_path=self.chromedriver_path, options=self.options
+        # )
+        self.browser.open_available_browser()
         self.browser.maximize_browser_window()
         self.browser.capture_page_screenshot("output/site_page.png")
         self.browser.click_element_when_visible("//a[contains(text(), 'Log In')]")
@@ -40,7 +41,10 @@ class Optum:
         self.browser.capture_page_screenshot("output/login_page.png")
         self.browser.input_text_when_element_is_visible("//input[@id='userNameId_input']", self.optum_creds["login"])
         self.browser.input_text_when_element_is_visible("//input[@id='passwdId_input']", self.optum_creds["password"])
+        self.browser.capture_page_screenshot("output/creds_page.png")
         self.browser.click_element_when_visible("//input[@id='SignIn']")
+        time.sleep(2)
+        self.browser.capture_page_screenshot("output/sign_clicked_page.png")
         access_code = self._get_gmail_code()
         log.info(f"got access code = {access_code}")
         self.browser.input_text_when_element_is_visible("//input[@id='EmailText_input']", access_code)
