@@ -33,7 +33,7 @@ class Optum:
         # self.browser.open_browser(
         #     self.optum_creds["url"], browser="googlechrome", executable_path=self.chromedriver_path, options=self.options
         # )
-        self.browser.open_available_browser()
+        self.browser.open_available_browser(self.optum_creds["url"])
         self.browser.maximize_browser_window()
         self.browser.capture_page_screenshot("output/site_page.png")
         self.browser.click_element_when_visible("//a[contains(text(), 'Log In')]")
