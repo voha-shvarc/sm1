@@ -79,6 +79,7 @@ class SonderMind:
         self.browser.input_text_when_element_is_visible(
             '//input[@id="app_authenticate_password"]', self.credentials["password"]
         )
+        log.info(f"\nh1 text = {self.browser.find_element('/html/body/div[3]/div/h1[2]').text}\n")
         self.browser.click_button_when_visible('//button[@type="submit"]')
         self.browser.click_element_when_visible('//span[contains(text(), "Next")]')
         self.solve_captcha()
