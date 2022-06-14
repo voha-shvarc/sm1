@@ -5,6 +5,7 @@ import re
 import datetime
 from retry import retry
 
+from selenium import webdriver
 from RPA.Browser.Selenium import Selenium
 from libraries import CONFIG, logger as log
 
@@ -16,6 +17,10 @@ class Optum:
         else:
             self.chromedriver_path = r"C:\Users\kykuc\Downloads\chromedriver_win32\chromedriver.exe"
         log.info(f"Chrome webdriver path = {self.chromedriver_path}")
+        self.options = webdriver.ChromeOptions()
+        self.options.add_argument("--no-sandbox")
+        self.options.add_argument("--disable-extensions")
+        self.options.add_argument('--disable-dev-shm-usage')
         self.browser = Selenium()
         self.optum_creds = optum_creds
         self.gmail_creds = gmail_creds
@@ -23,7 +28,7 @@ class Optum:
     def login(self):
         log.info("Logging to Optum...")
         self.browser.open_browser(
-            self.optum_creds["url"], browser="googlechrome", executable_path=self.chromedriver_path
+            self.optum_creds["url"], browser="googlechrome", executable_path=self.chromedriver_path, options=self.options
         )
         self.browser.maximize_browser_window()
         self.browser.click_element_when_visible("//a[contains(text(), 'Log In')]")
